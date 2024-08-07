@@ -8,9 +8,7 @@ import numpy as np
 COLOR_ANNOTATOR = sv.ColorAnnotator()
 LABEL_ANNOTATOR = sv.LabelAnnotator()
 BOX_ANNOTATOR = sv.BoxAnnotator()
-True_vals = [True, True, True, True, True]
-
-zone = np.array([[4, 11],[348, 4],[399, 1118],[9, 1130],[4, 21]])
+True_vals = [False, False, False, False, False]
    
 
 
@@ -41,7 +39,7 @@ def show_text(annotated_frame, label, start_point, end_point):
 
 
 def on_prediction(res: dict, frame: VideoFrame) -> None:
-
+    global True_vals
     image = frame.image
 
     print(res)
@@ -57,21 +55,25 @@ def on_prediction(res: dict, frame: VideoFrame) -> None:
         annotated_image = sv.LabelAnnotator().annotate(
             scene=annotated_image, detections=result
         )
-    if res['output4']:
+
+    if res['output5']:
         if not True_vals[2]:
             show_text(annotated_frame, "Get Line", (1000, 0), (1133, 150))
             True_vals[2] = True
-    if res["output1"]:
+    if res['output2']:
+        if not True_vals[2]:
+            show_text(annotated_frame, "Get Line", (1000, 0), (1133, 150))
+            True_vals[2] = True
+    if res["output6"]:
         if not True_vals[2]:
             show_text(annotated_frame, "Get String", (1000, 0), (1133, 150))
         True_vals[1] = True
-    if res["output5"]:
+    if res["output3"]:
         if not True_vals[1]:
             show_text(annotated_frame, "Get String", (1000, 0), (1133, 150))
         True_vals[0] = True
-    if res["output2"]:
-        if not True_vals[0]:
-            show_text(annotated_frame, "Get Wheel", (1000, 0), (1133, 150))
+    if not True_vals[0]:
+        show_text(annotated_frame, "Get Wheel", (1000, 0), (1133, 150))
     
     
 
