@@ -10,7 +10,8 @@ LABEL_ANNOTATOR = sv.LabelAnnotator()
 BOX_ANNOTATOR = sv.BoxAnnotator()
 True_vals = [False, False, False, False, False]
 
-
+zone = np.array([[4, 11],[348, 4],[399, 1118],[9, 1130],[4, 21]])
+   
 
 
 def show_text(annotated_frame, label, start_point, end_point):
@@ -18,7 +19,7 @@ def show_text(annotated_frame, label, start_point, end_point):
     end_point = end_point
 
     cv2.rectangle(annotated_frame, start_point, end_point, (0, 0, 255), cv2.FILLED)
-
+    
     text = label
     font = cv2.FONT_HERSHEY_SIMPLEX
     font_scale = 1
@@ -47,7 +48,7 @@ def on_prediction(res: dict, frame: VideoFrame) -> None:
     annotated_frame = image.copy()
 
     result = res['output']
-
+    cv2.polylines(annotated_frame, [zone], isClosed=True, color=(0, 0, 255), thickness=5)
     if result:
 
         annotated_image = sv.BoxAnnotator().annotate(
