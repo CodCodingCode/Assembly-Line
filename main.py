@@ -16,7 +16,7 @@ def show_text(annotated_frame, label, start_point, end_point):
     start_point = start_point
     end_point = end_point
 
-    cv2.rectangle(annotated_frame, start_point, end_point, (0, 0, 255), cv2.FILLED)
+    cv2.rectangle(annotated_frame, start_point, end_point, (255, 0, 157), cv2.FILLED)
     
     text = label
     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -39,14 +39,13 @@ def show_text(annotated_frame, label, start_point, end_point):
 
 
 def on_prediction(res: dict, frame: VideoFrame) -> None:
-    global True_vals
+    global True_vals, zone
     image = frame.image
 
-    print(res)
     annotated_frame = image.copy()
 
     result = res['output']
-    cv2.polylines(annotated_frame, [zone], isClosed=True, color=(0, 0, 255), thickness=5)
+
     if result:
 
         annotated_image = sv.BoxAnnotator().annotate(
@@ -57,23 +56,23 @@ def on_prediction(res: dict, frame: VideoFrame) -> None:
         )
 
     if res['output5']:
-        if not True_vals[2]:
-            show_text(annotated_frame, "Get Line", (1000, 0), (1133, 150))
-            True_vals[2] = True
+        if not True_vals[4]:
+            show_text(annotated_frame, "Put Back", (1300, 0), (1533, 130))
+            True_vals[3] = True
     if res['output2']:
-        if not True_vals[2]:
-            show_text(annotated_frame, "Get Line", (1000, 0), (1133, 150))
+        if not True_vals[3]:
+            show_text(annotated_frame, "Get Line", (1300, 0), (1533, 130))
             True_vals[2] = True
     if res["output6"]:
         if not True_vals[2]:
-            show_text(annotated_frame, "Get String", (1000, 0), (1133, 150))
+            show_text(annotated_frame, "Get Lid", (1300, 0), (1533, 130))
         True_vals[1] = True
     if res["output3"]:
         if not True_vals[1]:
-            show_text(annotated_frame, "Get String", (1000, 0), (1133, 150))
+            show_text(annotated_frame, "Get String", (1300, 0), (1533, 130))
         True_vals[0] = True
     if not True_vals[0]:
-        show_text(annotated_frame, "Get Wheel", (1000, 0), (1133, 150))
+        show_text(annotated_frame, "Get Wheel", (1300, 0), (1533, 130))
     
     
 
