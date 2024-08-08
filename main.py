@@ -54,28 +54,23 @@ def on_prediction(res: dict, frame: VideoFrame) -> None:
         annotated_image = sv.LabelAnnotator().annotate(
             scene=annotated_image, detections=result
         )
-
-    if res['output5']:
-        if not True_vals[4]:
-            show_text(annotated_frame, "Put Back", (1300, 0), (1533, 130))
-            True_vals[3] = True
-    if res['output2']:
-        if not True_vals[3]:
-            show_text(annotated_frame, "Get Line", (1300, 0), (1533, 130))
-            True_vals[2] = True
-    if res["output6"]:
-        if not True_vals[2]:
-            show_text(annotated_frame, "Get Lid", (1300, 0), (1533, 130))
-        True_vals[1] = True
-    if res["output3"]:
-        if not True_vals[1]:
-            show_text(annotated_frame, "Get String", (1300, 0), (1533, 130))
-        True_vals[0] = True
-    if not True_vals[0]:
+    
+    if (res["output5"] and True_vals[3]) or True_vals[4]:
+        show_text(annotated_frame, "Put Back", (1300, 0), (1533, 130))
+        True_vals = [False, False, False, False, True]
+    elif res['output2'] or True_vals[3]:
+        show_text(annotated_frame, "Get Line", (1300, 0), (1533, 130))
+        True_vals = [False, False, False, True, False]
+    elif res["output6"] or True_vals[2]:
+        show_text(annotated_frame, "Get Lid", (1300, 0), (1533, 130))
+        True_vals = [False, False, True, False, False]
+    elif res["output3"] or True_vals[1]:
+        show_text(annotated_frame, "Get String", (1300, 0), (1533, 130))
+        True_vals = [False, True, False, False, False]
+    if not any(True_vals):
         show_text(annotated_frame, "Get Wheel", (1300, 0), (1533, 130))
+        True_vals = [False, False, False, False, False]
     
-    
-
 
     # Show the annotated frame
     cv2.imshow("frame", annotated_frame)
