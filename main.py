@@ -2,8 +2,6 @@ import cv2
 from inference.core.interfaces.camera.entities import VideoFrame
 from inference import InferencePipeline
 import supervision as sv
-import mediapipe as mp
-import numpy as np
 
 COLOR_ANNOTATOR = sv.ColorAnnotator()
 LABEL_ANNOTATOR = sv.LabelAnnotator()
